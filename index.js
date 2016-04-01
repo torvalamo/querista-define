@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
-require('./lib/def.js');
+const def = require('./lib/define.js');
+
+const ctx = vm.createContext(def({}));
 
 /**
  * Return the combined Either() of all the blueprints.
@@ -13,8 +16,14 @@ module.exports = (dir) => {
   const blueprint = Either();
   const files = fs.readdirSync(dir);
   files.forEach((file) => {
-    let branch = require(path.join(dir, file));
-    merge(blueprint, branch);
+    let branch = fs.readFileSync(path.join(dir, file), 'utf8');
+    branch = new vm.Script('obj = Statement(' + branch + ');', {
+      filename: file,
+      displayErrors: true
+    });
+    let thisCtx = Object.assign({obj: null}, ctx);
+    branch.runInContext(thisCtx);
+    merge(blueprint, thisCtx.obj);
   });
 };
 
