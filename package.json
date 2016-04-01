@@ -1,0 +1,11 @@
+{
+  "name": "querista-define",
+  "description": "Definition framework for Querista",
+  "version": "0.0.1",
+  "repository": "torvalamo/querista-define",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">5.0.0"
+  }
+}
