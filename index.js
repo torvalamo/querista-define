@@ -39,13 +39,16 @@ function merge(blueprint, branch) {
   for (var idx = 0, len = arr.length; idx < len; idx++) {
     let elements = arr[idx].elements;
     let statement = branch.elements;
+    // In Statement. Check if first type matches.
     if (elements[0].type != statement[0].type) {
       continue;
-    }
-    // In Statement. Check first keyword match.
+    } 
+    // Check first keyword match.
     if (elements[0].name == statement[0].name) {
-      // Split it up
-      elements.push(Either(Statement(...elements.splice(1)), Statement(statement.slice(1))));
+      // Split it up.
+      elements.push(def.Either(
+        def.Statement(...elements.splice(1)), 
+        def.Statement(statement.slice(1))));
       return;
     }
   }
